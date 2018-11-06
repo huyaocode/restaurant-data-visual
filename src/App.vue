@@ -9,12 +9,17 @@
     </div>
     <div class="right">
       <div class="chats">
-        <consume-tend v-if="'consume-tend' === this.curSide" />
-        <blocks v-else-if="'blocks' === this.curSide" />
+        <consume-tend v-if="'consume-tend' === curSide" />
+        <blocks v-else-if="'blocks' === curSide" />
         <category-stack v-else />
       </div>
       <ul class="tabs">
-        <li v-for="item of charts" :key="item.name">
+        <li 
+          v-for="item of charts" 
+          :key="item.name"
+          :class="{active: curSide === item.value}"
+          @click="changeView(item.value)"
+        >
           {{item.name}}
         </li>
       </ul>
@@ -23,6 +28,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Map from './components/Map'
 import RestaurantDetail from './components/RestaurantDetail'
 import CiYun from './components/CiYun'
@@ -34,13 +40,20 @@ export default {
   name: 'app',
   data () {
     return {
+      restaurants: null,  //所有餐厅信息
+      comments: null, //该餐厅的评论
+      curRest: null,  //当前餐厅
+      //页面右下角的tabs
       curSide: 'blocks',
       charts: [{
-        name: "各月消费情况"
+        name: "各月消费情况",
+        value: 'consume-tend'
       }, {
-        name: "各区域消费情况"
+        name: "各区域消费情况",
+        value: 'blocks'
       }, {
-        name: "各类别消费情况"
+        name: "各类别消费情况",
+        value: 'category-stack'
       }]
     }
   },
@@ -51,6 +64,24 @@ export default {
     CiYun,
     ConsumeTend,
     RestaurantDetail
+  },
+  mounted() {
+    this.loadData();
+  },
+  methods: {
+    changeView(value) {
+      this.curSide = value;
+    },
+    loadData(){
+      axios.get('/api/restaurants.json').then(res => {
+        this.restaurants = res.data;
+        console.log(res.data)
+      })
+      axios.get('/api/comments.json').then(res => {
+        this.comments = res.data;
+         console.log(res.data)
+      })
+    }
   }
 }
 </script>
@@ -109,7 +140,7 @@ html
       border-right: 1px solid #eee;
       cursor: pointer;
       text-align: center;
-      &:hover
+      &:hover, &.active
         background: #f9f9f9;
         color: #333;
 </style>
