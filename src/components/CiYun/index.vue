@@ -7,8 +7,15 @@
 <script>
 
 export default {
-
-  
+  props: ['commentWordList'],
+  watch: {//  仅测试使用
+    commentWordList: {
+      deep: true,
+      handler: function () {
+        console.log('词云',  this.commentWordList)
+      }
+    }
+  }
 }
 </script>
 

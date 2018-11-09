@@ -7,8 +7,15 @@
 <script>
 
 export default {
-
-  
+  props: ['restDetail', 'commentList'],
+  watch: {//  仅测试使用
+    restDetail: {
+      deep: true,
+      handler: function () {
+        console.log('单店营业情况', this.restDetail, this.commentList)
+      }
+    }
+  }
 }
 </script>
 

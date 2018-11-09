@@ -12,7 +12,7 @@ fs.readFile('../item.json', 'utf8', (err, res) => {
     //根据原有属性计算得出新属性
     data[i].type = infos[0];
     data[i].street = infos[2];
-    data[i].position = '四川省绵阳市' + infos[2] + infos[3];
+    data[i].position = infos[2] + infos[3];
     data[i].review_count = data[i].review_count.split(' ')[0];
     //删除冗余的和无效的属性
     delete data[i].item_info;
@@ -20,7 +20,7 @@ fs.readFile('../item.json', 'utf8', (err, res) => {
     delete data[i].item_key_word;
   }
   let restsData = JSON.stringify(data);
-  fs.writeFile('../restaurants.json', restsData, () => console.log('succ'));
+  fs.writeFile('../halfHandledRestaurants.json', restsData, () => console.log('succ'));
 });
 
 /**

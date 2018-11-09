@@ -1,25 +1,20 @@
 <template>
   <div id="app">
     <div class="left">
-      <Map class="map" />
+      <Map class="map" :restaurants=restaurants :rest-type=curRestType @point-click="handleRestClick" @rest-type-change="handleRestTypeChange" />
       <div class="bottom">
-        <restaurant-detail class="restaurant-detail" />
-        <ci-yun class="ci-yun" />
+        <restaurant-detail class="restaurant-detail" :rest-detail="curRestDetail" :comment-list="curRestComments" />
+        <ci-yun class="ci-yun" :comment-word-list="commentWordList" />
       </div>
     </div>
     <div class="right">
       <div class="chats">
-        <consume-tend v-if="'consume-tend' === curSide" />
+        <consume-tend v-if="'consume-tend' === curSide" :comments="comments"/>
         <blocks v-else-if="'blocks' === curSide" />
-        <category-stack v-else />
+        <category-stack v-else  :restaurants="restaurants"/>
       </div>
       <ul class="tabs">
-        <li 
-          v-for="item of charts" 
-          :key="item.name"
-          :class="{active: curSide === item.value}"
-          @click="changeView(item.value)"
-        >
+        <li v-for="item of charts" :key="item.name" :class="{active: curSide === item.value}" @click="changeView(item.value)">
           {{item.name}}
         </li>
       </ul>
@@ -42,7 +37,9 @@ export default {
     return {
       restaurants: null,  //所有餐厅信息
       comments: null, //该餐厅的评论
-      curRest: null,  //当前餐厅
+      curRestId: null,  //当前餐厅id
+      curRestType: '川菜',  //当前地图上所展示的餐厅类型
+      ak: 'Nh9SjwriMSkKr6cexzDTEKqfu9p7yNQp',
       //页面右下角的tabs
       curSide: 'blocks',
       charts: [{
@@ -65,22 +62,78 @@ export default {
     ConsumeTend,
     RestaurantDetail
   },
-  mounted() {
+  mounted () {
     this.loadData();
   },
-  methods: {
-    changeView(value) {
-      this.curSide = value;
+  computed: {
+    /**
+     * 当前餐厅细节信息
+     */
+    curRestDetail: function () {
+      if (this.curRestId) {
+        for (let i in this.restaurants) {
+          if (this.restaurants[i].item_id === this.curRestId) {
+            return this.restaurants[i];
+          }
+        }
+      }
     },
-    loadData(){
+    /**
+     * 当前餐厅的所有评论信息
+     */
+    curRestComments: function () {
+      if (this.curRestId && this.comments["" + this.curRestId]) {
+        return this.comments["" + this.curRestId]
+      } else {
+        return null;
+      }
+    },
+    /**
+     * 当前餐厅评论的热词，已经后台排好序
+     */
+    commentWordList: function () {
+      if (this.curRestComments) {
+        return this.curRestComments.review
+      } else {
+        return [];
+      }
+    }
+  },
+  methods: {
+    /**
+     * 加载数据
+     */
+    loadData () {
       axios.get('/api/restaurants.json').then(res => {
         this.restaurants = res.data;
-        console.log(res.data)
+        console.log("餐厅数据", res.data)
+        console.log('餐厅数据数量', res.data.length)
       })
       axios.get('/api/comments.json').then(res => {
         this.comments = res.data;
-         console.log(res.data)
+        console.log('评论数据', res.data)
+        console.log('评论数据数量', Object.keys[res.data])
       })
+    },
+    /**
+     * 处理地图上餐厅的点击事件
+     */
+    handleRestClick (restId) {
+      console.log(restId)
+      this.curRestId = restId;
+      console.log(this.curRestDetail, this.curRestComments)
+    },
+    /**
+     * 切换侧栏视图
+     */
+    changeView (value) {
+      this.curSide = value;
+    },
+    /**
+     * 餐厅类型切换
+     */
+    handleRestTypeChange (value) {
+      this.curRestType = value;
     }
   }
 }
