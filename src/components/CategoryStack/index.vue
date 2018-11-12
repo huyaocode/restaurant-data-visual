@@ -1,6 +1,6 @@
 <template>
   <div>
-    CategoryStack
+    堆叠条形图
   </div>
 </template>
 

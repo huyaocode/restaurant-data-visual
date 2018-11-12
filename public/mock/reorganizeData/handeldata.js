@@ -38,7 +38,7 @@ fs.readFile('../useritem.json', 'utf8', (err, res) => {
       comments[id].avg_tast = 0;
       comments[id].avg_environment = 0;
       comments[id].avg_service = 0;
-      comments[id].review = "";
+      // comments[id].review = "";
       // comments[id].words = [];
       comments[id].details = [];
     }
@@ -47,7 +47,7 @@ fs.readFile('../useritem.json', 'utf8', (err, res) => {
     comments[id].avg_tast += tast;
     comments[id].avg_environment += environment;
     comments[id].avg_service += service;
-    comments[id].review += (review + ' ');
+    // comments[id].review += (review + ' ');
     //添加单条评论的属性，因为有的属性用不着
     comments[id].details.push({
       times,
@@ -66,5 +66,5 @@ fs.readFile('../useritem.json', 'utf8', (err, res) => {
     item.avg_environment /= len;
     item.avg_service /= len;
   }
-  fs.writeFile('../halfHandledComments.json', JSON.stringify(comments), () => console.log('succ'));
+  fs.writeFile('../comments.json', JSON.stringify(comments), () => console.log('succ'));
 });

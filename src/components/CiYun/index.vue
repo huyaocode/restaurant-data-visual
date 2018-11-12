@@ -1,11 +1,11 @@
 <template>
   <div>
-    词云
+    词云 
   </div>
 </template>
 
 <script>
-
+import axios from 'axios';//用于发请求
 export default {
   props: ['commentWordList'],
   watch: {//  仅测试使用

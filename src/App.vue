@@ -46,10 +46,10 @@ export default {
         name: "各月消费情况",
         value: 'consume-tend'
       }, {
-        name: "各区域消费情况",
+        name: "各类别消费情况",
         value: 'blocks'
       }, {
-        name: "各类别消费情况",
+        name: "各区域消费情况",
         value: 'category-stack'
       }]
     }
@@ -121,7 +121,6 @@ export default {
     handleRestClick (restId) {
       console.log(restId)
       this.curRestId = restId;
-      console.log(this.curRestDetail, this.curRestComments)
     },
     /**
      * 切换侧栏视图
