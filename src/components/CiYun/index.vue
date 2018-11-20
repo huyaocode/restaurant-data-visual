@@ -7,12 +7,12 @@
 <script>
 import axios from 'axios';//用于发请求
 export default {
-  props: ['commentWordList'],
+  props: ['curRestId'],
   watch: {//  仅测试使用
-    commentWordList: {
+    curRestId: {
       deep: true,
       handler: function () {
-        console.log('词云',  this.commentWordList)
+        console.log('词云',  this.curRestId)
       }
     }
   }

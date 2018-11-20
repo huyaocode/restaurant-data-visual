@@ -4,14 +4,14 @@
       <Map class="map" :restaurants=restaurants :rest-type=curRestType @point-click="handleRestClick" @rest-type-change="handleRestTypeChange" />
       <div class="bottom">
         <restaurant-detail class="restaurant-detail" :rest-detail="curRestDetail" :comment-list="curRestComments" />
-        <ci-yun class="ci-yun" :comment-word-list="commentWordList" />
+        <ci-yun class="ci-yun" :cur-rest-id="curRestId" />
       </div>
     </div>
     <div class="right">
       <div class="chats">
-        <consume-tend v-if="'consume-tend' === curSide" :comments="comments"/>
+        <consume-tend v-if="'consume-tend' === curSide" :comments="comments" />
         <blocks v-else-if="'blocks' === curSide" />
-        <category-stack v-else  :restaurants="restaurants"/>
+        <category-stack v-else :restaurants="restaurants" />
       </div>
       <ul class="tabs">
         <li v-for="item of charts" :key="item.name" :class="{active: curSide === item.value}" @click="changeView(item.value)">
@@ -38,7 +38,7 @@ export default {
       restaurants: null,  //所有餐厅信息
       comments: null, //该餐厅的评论
       curRestId: null,  //当前餐厅id
-      curRestType: '川菜',  //当前地图上所展示的餐厅类型
+      curRestType: 'all',  //当前地图上所展示的餐厅类型
       ak: 'Nh9SjwriMSkKr6cexzDTEKqfu9p7yNQp',
       //页面右下角的tabs
       curSide: 'blocks',
@@ -119,7 +119,7 @@ export default {
      * 处理地图上餐厅的点击事件
      */
     handleRestClick (restId) {
-      console.log(restId)
+      console.log('restId', restId)
       this.curRestId = restId;
     },
     /**
@@ -145,6 +145,9 @@ html
     height: 100%;
     margin: 0px;
     padding: 0px;
+
+.anchorBL 
+    display: none;
 
 #app
   display: flex;
