@@ -7,7 +7,7 @@ import func from './vue-temp/vue-editor-bridge';
         <span :style="{background: 'blue'}"></span> 全选
       </li>
       <li v-for="t in restTypes" :key="t.type" :type="t.type" @click="handleTypeClick" :class="[(t.type==restType || 'all'==restType) ? '' : 'half-opacity']">
-        <span :style="{background: t.color}" ></span> {{t.type}}
+        <span :style="{background: t.color}"></span> {{t.type}}
       </li>
     </ul>
     <div id="mymap" ref="mymap">
@@ -46,7 +46,8 @@ export default {
     restaurants: {
       deep: true,
       handler: function () {
-        this.drawPoints();
+        const data = this.getCurPoints();
+        this.drawPoints(data);
       }
     },
     restType () {
@@ -69,21 +70,23 @@ export default {
       });
     },
     /**
-     * 获取需要展示的节点
+     * 根据当前选中的餐厅类型获得mapv地图点的数组
      */
-    getCurPoints() {
+    getCurPoints () {
       const data = [];
       //瞄点
       for (let i in this.restaurants) {
         const { item_id, type, location: { lng, lat } } = this.restaurants[i];
-        let index = 9;
-        for (let j in this.restTypes) { //获取index为了做count值，用于颜色区分
-          if (this.restTypes[j].type === type) {
-            index = parseInt(j) +1;
-            break;
+        //当经纬度信息存在、餐厅类型等于当前想展示的餐厅类型或餐厅类型等于“all”
+        if (lng && lat && (type === this.restType || this.restType === 'all')) {
+          let index = this.restTypes.length;  //默认为其他类型
+          //获取index为了做count值，用于颜色区分
+          for (let j in this.restTypes) {
+            if (this.restTypes[j].type === type) {
+              index = parseInt(j) + 1;
+              break;
+            }
           }
-        }
-        if (lng && lat && (type === this.restType  || this.restType === 'all')) {
           data.push({
             geometry: {
               type: 'Point',
@@ -98,15 +101,14 @@ export default {
       return data;
     },
     /**
-     * 根据餐厅类型类型描点
+     * 将所有点描在地图上，定义回调函数
      */
-    drawPoints () {
-      const data = this.getCurPoints();
+    drawPoints (data) {
       this.allDataSet = new mapv.DataSet(data);
       //求得色彩map
       const colorsMaps = { other: '#fff' };
       for (let i in this.restTypes) {
-        colorsMaps[1+parseInt(i)] = this.restTypes[i].color;
+        colorsMaps[1 + parseInt(i)] = this.restTypes[i].color;
       }
       const _this = this;
       //点的设置
@@ -120,7 +122,7 @@ export default {
             }
           }
         },
-        max: 10,
+        max: _this.restTypes.length+1,
         draw: 'category'  //按种类来渲染点的色彩
       }
       const mapvLayer = new mapv.baiduMapLayer(this.map, this.allDataSet, options);
