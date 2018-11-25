@@ -5,10 +5,28 @@
 </template>
 
 <script>
-
+import axios from 'axios'
+import splitBlock from './splitBlock'
 export default {
-
-  
+  mounted () {
+    this.loadData();
+  },
+  methods: {
+    loadData () {
+      const _this = this;
+      axios.get('/api/type-position.json').then(
+        res => {
+          _this.drawBlocks(res.data);
+        }
+      ).catch(err => {
+        console.log('没有获取到type-position.json！')
+      })
+    },
+    drawBlocks(arr) {
+      const blocks = splitBlock(arr, 1000, 1000);
+      console.log('方块信息',blocks)
+    }
+  }
 }
 </script>
 
