@@ -6,7 +6,7 @@ import func from './vue-temp/vue-editor-bridge';
       <li type="all" @click="handleTypeClick" :class="['all'==restType ? '' : 'half-opacity']">
         <span :style="{background: 'blue'}"></span> 全选
       </li>
-      <li v-for="t in restTypes" :key="t.type" :type="t.type" @click="handleTypeClick" :class="[(t.type==restType || 'all'==restType) ? '' : 'half-opacity']">
+      <li v-for="t in typeColor" :key="t.type" :type="t.type" @click="handleTypeClick" :class="[(t.type==restType || 'all'==restType) ? '' : 'half-opacity']">
         <span :style="{background: t.color}"></span> {{t.type}}
       </li>
     </ul>
@@ -21,22 +21,11 @@ import axios from 'axios'
 import styleJson from './styleJson.js'
 
 export default {
-  props: ['restaurants', 'restType'],
+  props: ['restaurants', 'restType', 'typeColor'],
   data () {
     return {
       map: null,
-      allDataSet: null,
-      restTypes: [
-        { color: '#f9c', type: '川菜' },
-        { color: '#f66', type: '火锅' },
-        { color: '#c60', type: '烧烤' },
-        { color: '#ff3', type: '快餐简餐' },
-        { color: '#fcc', type: '面包甜点' },
-        { color: '#cf6', type: '小吃面食' },
-        { color: '#c96', type: '咖啡厅' },
-        { color: '#093', type: '茶馆' },
-        { color: '#eee', type: '其他' }
-      ]
+      allDataSet: null
     }
   },
   mounted () {
@@ -79,10 +68,10 @@ export default {
         const { item_id, type, location: { lng, lat } } = this.restaurants[i];
         //当经纬度信息存在、餐厅类型等于当前想展示的餐厅类型或餐厅类型等于“all”
         if (lng && lat && (type === this.restType || this.restType === 'all')) {
-          let index = this.restTypes.length;  //默认为其他类型
+          let index = this.typeColor.length;  //默认为其他类型
           //获取index为了做count值，用于颜色区分
-          for (let j in this.restTypes) {
-            if (this.restTypes[j].type === type) {
+          for (let j in this.typeColor) {
+            if (this.typeColor[j].type === type) {
               index = parseInt(j) + 1;
               break;
             }
@@ -107,8 +96,8 @@ export default {
       this.allDataSet = new mapv.DataSet(data);
       //求得色彩map
       const colorsMaps = { other: '#fff' };
-      for (let i in this.restTypes) {
-        colorsMaps[1 + parseInt(i)] = this.restTypes[i].color;
+      for (let i in this.typeColor) {
+        colorsMaps[1 + parseInt(i)] = this.typeColor[i].color;
       }
       const _this = this;
       //点的设置
@@ -122,7 +111,7 @@ export default {
             }
           }
         },
-        max: _this.restTypes.length+1,
+        max: _this.typeColor.length+1,
         draw: 'category'  //按种类来渲染点的色彩
       }
       const mapvLayer = new mapv.baiduMapLayer(this.map, this.allDataSet, options);

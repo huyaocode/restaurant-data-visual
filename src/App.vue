@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="left">
-      <Map class="map" :restaurants=restaurants :rest-type=curRestType @point-click="handleRestClick" @rest-type-change="handleRestTypeChange" />
+      <Map class="map" :restaurants=restaurants :rest-type=curRestType :type-color=typeColor @point-click="handleRestClick" @rest-type-change="handleRestTypeChange" />
       <div class="bottom">
         <restaurant-detail class="restaurant-detail" :rest-detail="curRestDetail" :comment-list="curRestComments" />
         <ci-yun class="ci-yun" :cur-rest-id="curRestId" />
@@ -10,7 +10,7 @@
     <div class="right">
       <div class="chats">
         <consume-tend v-if="'consume-tend' === curSide" :comments="comments" />
-        <blocks v-else-if="'blocks' === curSide" />
+        <blocks v-else-if="'blocks' === curSide" :type-color=typeColor />
         <category-stack v-else :restaurants="restaurants" />
       </div>
       <ul class="tabs">
@@ -51,7 +51,25 @@ export default {
       }, {
         name: "各区域消费情况",
         value: 'category-stack'
-      }]
+      }],
+      typeColor: [
+        { color: '#fc0', type: '川菜' },
+        { color: '#f66', type: '火锅' },
+        { color: '#c60', type: '烧烤' },
+        { color: '#c9c', type: '自助餐' },
+        { color: '#ff3', type: '快餐简餐' },
+        { color: '#ffc', type: '面包甜点' },
+        { color: '#c03', type: '西餐' },
+        { color: '#39c', type: '韩国料理' },
+        { color: '#a2a', type: '日本料理' },
+        { color: '#cf6', type: '小吃面食' },
+        { color: '#c96', type: '咖啡厅' },
+        { color: '#093', type: '东南亚菜' },
+        { color: '#6cc', type: '粤菜' },
+        { color: '#cc6', type: '江浙菜' },
+        { color: '#cff', type: '酒吧' },
+        { color: '#ccc', type: '其他' }
+      ]
     }
   },
   components: {
@@ -145,7 +163,7 @@ html
     height: 100%;
     margin: 0px;
     padding: 0px;
-
+    position: relative
 .anchorBL 
     display: none;
 
@@ -167,18 +185,14 @@ html
     display: flex;
     .ci-yun
       width: 45%;
-      border: 1px solid blue;
     .restaurant-detail
       width: 55%;
       min-width: 500px;
-      border: 1px solid red;
 .right
   position: relative;
-  border: 1px solid orange;
   width: 38%;
   min-width: 400px;
-  .chats
-    border: 1px solid red;
+  border-left: 1px solid #000;
   .tabs
     position: absolute;
     display: flex;
