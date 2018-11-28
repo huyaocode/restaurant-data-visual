@@ -35,12 +35,12 @@ fs.readFile('../item.json', 'utf8', (err, res) => {
 
   //将嵌套的对象转换为嵌套的数组
   const array = Object.keys(restDistribute).map(typeKey => ({
-    type: typeKey,
+    name: typeKey,
     size: Object.values(restDistribute[typeKey]).reduce((total, count) => {
       return total + count
     }, 0),
     streets: Object.keys(restDistribute[typeKey]).map(posKey => ({
-      pos: posKey,
+      name: posKey,
       size: restDistribute[typeKey][posKey]
     }))
   }))

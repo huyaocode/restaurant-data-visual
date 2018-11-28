@@ -3,14 +3,27 @@ import func from './vue-temp/vue-editor-bridge';
 <template>
   <div class="wrapper">
     <ul id="types">
-      <li type="all" @click="handleTypeClick" :class="['all'==restType ? '' : 'half-opacity']">
+      <li
+        type="all"
+        @click="handleTypeClick"
+        :class="['all'==restType ? '' : 'half-opacity']"
+      >
         <span :style="{background: 'blue'}"></span> 全选
       </li>
-      <li v-for="t in typeColor" :key="t.type" :type="t.type" @click="handleTypeClick" :class="[(t.type==restType || 'all'==restType) ? '' : 'half-opacity']">
+      <li
+        v-for="t in typeColor"
+        :key="t.type"
+        :type="t.type"
+        @click="handleTypeClick"
+        :class="[(t.type==restType || 'all'==restType) ? '' : 'half-opacity']"
+      >
         <span :style="{background: t.color}"></span> {{t.type}}
       </li>
     </ul>
-    <div id="mymap" ref="mymap">
+    <div
+      id="mymap"
+      ref="mymap"
+    >
     </div>
   </div>
 
@@ -18,6 +31,7 @@ import func from './vue-temp/vue-editor-bridge';
 
 <script>
 import axios from 'axios'
+import * as d3 from 'd3'
 import styleJson from './styleJson.js'
 
 export default {
@@ -65,7 +79,7 @@ export default {
       const data = [];
       //瞄点
       for (let i in this.restaurants) {
-        const { item_id, type, location: { lng, lat } } = this.restaurants[i];
+        const { item_id, type, location: { lng, lat }, name } = this.restaurants[i];
         //当经纬度信息存在、餐厅类型等于当前想展示的餐厅类型或餐厅类型等于“all”
         if (lng && lat && (type === this.restType || this.restType === 'all')) {
           let index = this.typeColor.length;  //默认为其他类型
@@ -80,7 +94,9 @@ export default {
             geometry: {
               type: 'Point',
               coordinates: [lng, lat],
-              item_id
+              item_id,
+              name,
+              restType: type
             },
             count: index,
             size: 4
@@ -99,6 +115,21 @@ export default {
       for (let i in this.typeColor) {
         colorsMaps[1 + parseInt(i)] = this.typeColor[i].color;
       }
+
+      //tooltip
+      var div = d3.select('body').append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0)
+        .style("z-index", 1000)
+        .style("position", 'absolute')
+        .style("color", '#fff')
+        .style("padding", '2px 6px')
+        .style("border-radius", '3px')
+        .style("text-align", 'center')
+        .style("background-color", '#000')
+        .style("top", 10 + "px");
+
+
       const _this = this;
       //点的设置
       const options = {
@@ -109,9 +140,27 @@ export default {
               _this.$emit('point-click', item.geometry.item_id)
               return false;
             }
+          },
+          mousemove: function (item, e) {
+            if (item) {
+              const { geometry: { name, restType } } = item;
+              div.transition()
+                .duration(500)
+                .style("opacity", .9);
+              div.html(name + '</br>' + restType)
+                .style("top", (e.clientY - 40) + "px")
+                .style("left", function () {
+                  const divWidth = div._groups[0][0].offsetWidth
+                  return e.clientX - divWidth / 2 + "px"
+                });
+            } else {
+              div.transition()
+                .duration(10)
+                .style("opacity", 0);
+            }
           }
         },
-        max: _this.typeColor.length+1,
+        max: _this.typeColor.length + 1,
         draw: 'category'  //按种类来渲染点的色彩
       }
       const mapvLayer = new mapv.baiduMapLayer(this.map, this.allDataSet, options);

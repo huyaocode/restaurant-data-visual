@@ -10,7 +10,7 @@
     <div class="right">
       <div class="chats">
         <consume-tend v-if="'consume-tend' === curSide" :comments="comments" />
-        <blocks v-else-if="'blocks' === curSide" :type-color=typeColor />
+        <blocks v-else-if="'blocks' === curSide" :type-color=typeColor :rest-type=curRestType />
         <category-stack v-else :restaurants="restaurants" />
       </div>
       <ul class="tabs">
@@ -199,7 +199,7 @@ html
     bottom: 0px;
     width: 100%;
     height: 40px;
-    background-color: #888;
+    background-color: #044064;
     li
       width: 33%;
       padding: 0 5px;
@@ -210,6 +210,6 @@ html
       cursor: pointer;
       text-align: center;
       &:hover, &.active
-        background: #f9f9f9;
+        background: #ccc;
         color: #333;
 </style>
