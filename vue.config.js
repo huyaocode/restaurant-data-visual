@@ -17,6 +17,13 @@ module.exports = {
         pathRewrite: {
           '^/api': '/mock'
         }
+      },
+      '/ciyun':{
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/ciyun': '/worldCloud'
+        }
       }
     }
   }
