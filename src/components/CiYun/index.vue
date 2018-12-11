@@ -19,11 +19,15 @@ export default {
       deep: true,
       handler: function () {
         this.$refs.img.src = "zongpingfen"
-        axios.get(`ciyun?itemid=${this.curRestId}`).then(res => {
+        try {
+          axios.get(`ciyun?itemid=${this.curRestId}`).then(res => {
           const url = res.data
-          this.$refs.img.src = `http://127.0.0.1:5000/${url}`
+            this.$refs.img.src = `http://127.0.0.1:5000/${url}`
         }, err => {
         })
+        } catch (e) {
+        }
+        
       }
     }
   }
@@ -39,8 +43,14 @@ div
   height: 100%;
   box-sizing: border-box;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 
 #ciyun
-  width: 80%;
-  height: 100%;
+  width: 100%;
+  height: 105%;
+  position: absolute;
+  top: -5px;
+  left: 0;
+
 </style>

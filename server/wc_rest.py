@@ -50,16 +50,16 @@ def cloud(text,itemid):
     # wordCloud 生成词云
     fontpath = "SourceHanSansCN-Regular.otf"
     #backgroud_Image = plt.imread('cloud.jpg')
-    wc = WordCloud(background_color='white',  # 设置背景颜色
+    wc = WordCloud(background_color='#333',  # 设置背景颜色
                    #mask=backgroud_Image,  # 设置背景图片
                    max_words=100,  # 设置最大现实的字数
                    stopwords=STOPWORDS,  # 设置停用词
                    font_path=fontpath,  # 设置字体格式，如不设置显示不了中文
-                   max_font_size=500,  # 设置字体最大值
-                   min_font_size=30,  # 设置字体最小值
+                   max_font_size=300,  # 设置字体最大值
+                   min_font_size=15,  # 设置字体最小值
                    random_state=42,  # 设置有多少种随机生成状态，即有多少种配色方案
                    collocations=False, # 避免重复的单词
-                   width=1600, height=1200,margin=10, # 设置图像宽高，字体间距
+                   width=300, height=220,margin=10, # 设置图像宽高，字体间距
                    )
     wc.generate(cuted)
     # image_colors = ImageColorGenerator(backgroud_Image)

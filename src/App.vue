@@ -9,7 +9,7 @@
     </div>
     <div class="right">
       <div class="chats">
-        <consume-tend v-if="'consume-tend' === curSide" :comments="comments" />
+        <consume-tend v-if="'consume-tend' === curSide" :typeTend="typeTend"/>
         <blocks v-else-if="'blocks' === curSide" :type-color=typeColor :rest-type=curRestType />
         <category-stack v-else :restaurants="restaurants" />
       </div>
@@ -25,6 +25,7 @@
 <script>
 import axios from 'axios'
 import Map from './components/Map'
+import * as d3 from 'd3'
 import RestaurantDetail from './components/RestaurantDetail'
 import CiYun from './components/CiYun'
 import ConsumeTend from './components/ConsumeTend'
@@ -38,6 +39,7 @@ export default {
       restaurants: null,  //所有餐厅信息
       comments: null, //该餐厅的评论
       curRestId: null,  //当前餐厅id
+      typeTend:null,
       curRestType: 'all',  //当前地图上所展示的餐厅类型
       ak: 'Nh9SjwriMSkKr6cexzDTEKqfu9p7yNQp',
       //页面右下角的tabs
@@ -82,6 +84,7 @@ export default {
   },
   mounted () {
     this.loadData();
+    this.addTooltip();
   },
   computed: {
     /**
@@ -118,6 +121,22 @@ export default {
     }
   },
   methods: {
+    addTooltip() {
+       let tooltip = d3.select("body").append("span")
+          .attr("class","tooltip")
+          .style("width","100px")
+          .style("height","auto")
+          .style("border","1px soild red")
+          .style("text-align","center")
+          .style("padding","10px")
+          .style("line-height","24px")
+          .style("border-radius","5px")
+          .style("background-color","#FFF") //提示框背景颜色
+          .style("position","absolute")
+          .style("opacity",0.0)
+          .style("z-index",-111)
+          .style("top", 10 + "px");
+    },
     /**
      * 加载数据
      */
@@ -131,6 +150,10 @@ export default {
         this.comments = res.data;
         console.log('评论数据', res.data)
         console.log('评论数据数量', Object.keys[res.data])
+      })
+      axios.get('/api/typeTend.json').then(res => {
+        this.typeTend = res.data;      
+        console.log("数据", this.typeTend) 
       })
     },
     /**
@@ -164,8 +187,20 @@ html
     margin: 0px;
     padding: 0px;
     position: relative
+    // background-color: #071834;
+    background-color: #333;
+    overflow: hidden;
+
 .anchorBL 
     display: none;
+
+.tooltip
+  position: absolute;
+  top: 0
+
+.RD-tooltip
+  position: absolute;
+  top: 0
 
 #app
   display: flex;
@@ -179,20 +214,21 @@ html
   .map
     height: 70%;
     min-height: 500px;
-    border: 1px solid #000;
   .bottom
     height: 30%;
     display: flex;
     .ci-yun
       width: 45%;
+      border: 1px solid #fff;
     .restaurant-detail
       width: 55%;
       min-width: 500px;
+      border: 1px solid #fff;
 .right
   position: relative;
   width: 38%;
   min-width: 400px;
-  border-left: 1px solid #000;
+  border-left: 1px solid #fff;
   .tabs
     position: absolute;
     display: flex;
@@ -206,7 +242,7 @@ html
       line-height: 40px;
       text-size: 18px;
       color: #fff;
-      border-right: 1px solid #eee;
+      border-right: 1px solid #fff;
       cursor: pointer;
       text-align: center;
       &:hover, &.active

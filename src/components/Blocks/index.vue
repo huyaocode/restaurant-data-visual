@@ -3,9 +3,10 @@
     id="blocks"
     ref="block"
   >
+    <h2>{{title}}</h2>
     <svg
       width="570"
-      height="670"
+      height="570"
       ref="svg"
     ></svg>
   </div>
@@ -30,13 +31,18 @@ export default {
       }
       //如果不是展示所有类型，那么就展示当前类型存在的街道
       if (this.restType !== 'all') {
-        const blockArr = this.allDataSet.filter(e => 
+        const blockArr = this.allDataSet.filter(e =>
           e.name === this.restType
         )[0].streets;
         this.drawBlocks(blockArr)
       } else {
         this.drawBlocks(this.allDataSet)
       }
+    }
+  },
+  computed:{
+    title () {
+      return this.restType === 'all' ? "绵阳市各类型餐厅比例": this.restType + "在绵阳市分布情况"
     }
   },
   mounted () {
@@ -54,7 +60,13 @@ export default {
         console.log('没有获取到type-position.json或操作时抛出异常！')
       })
     },
+    color() {
+        const colorList = ['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#e6550d', '#fd8d3c', '#fdae6b', '#fdd0a2', '#31a354', '#74c476', '#a1d99b', '#c7e9c0', '#756bb1', '#9e9ac8', '#bcbddc', '#dadaeb', '#636363', '#969696', '#bdbdbd', '#d9d9d9'];
+        const colorLen = colorList.length;
+        return colorList[parseInt(Math.random() * colorLen)];
+    },
     drawBlocks (arr) {
+      
       var svg = d3.select(this.$refs.svg);
       d3.select(this.$refs.svg).selectAll("rect").remove();
       d3.select(this.$refs.svg).selectAll("text").remove();
@@ -67,13 +79,14 @@ export default {
       var div = d3.select('body').append("div")
         .attr("class", "tooltip")
         .style("opacity", 0)
-        .style("z-index", 1000)
+        .style("z-index", 1333)
         .style("position", 'absolute')
-        .style("color", '#fff')
-        .style("padding", '2px 6px')
+        .style("color", '#000')
+        .style("padding", '6px 12px')
         .style("border-radius", '3px')
         .style("text-align", 'center')
-        .style("background-color", '#000')
+        .style("background-color", '#fff')
+        .style("line-height", '18px')
         .style("top", 10 + "px");
       //添加矩形元素
       var rects = svg.selectAll(".MyRect")
@@ -93,9 +106,9 @@ export default {
         .attr("height", function (d) {
           return d.pos.h
         })
-        .attr("fill", function (d) {
-          if(_this.restType !== 'all'){
-            return '#044064'
+        .attr("fill", function (d, i) {
+          if (_this.restType !== 'all') {
+            return _this.color();
           }
           for (let i in _this.typeColor) {
             if (d.info.name === _this.typeColor[i].type) {
@@ -108,8 +121,8 @@ export default {
         .on("mousemove", function (d) {
           div.transition()
             .duration(10)
-            .style("opacity", .9);
-          div.html(d.info.name + '</br>' + d.info.size + '</br>' + Math.round(((d.pos.w * d.pos.h) / (width * height)) * 10000) / 100 + '%')
+            .style("opacity", 1);
+          div.html( d.info.name + '</br> 店家数量：' + d.info.size + '</br> 所占比例：' + Math.round(((d.pos.w * d.pos.h) / (width * height)) * 13330) / 100 + '%')
             .style("top", (d3.event.pageY) + "px");
           const divWidth = div._groups[0][0].offsetWidth
           if (d3.event.pageX > window.innerWidth - divWidth) {
@@ -143,22 +156,22 @@ export default {
           return d.pos.h / 2 + 6;
         })
         .text(function (d) {
-          if (d.pos.w > 16 * d.info.name.length && d.pos.h > 16 ){
+          if (d.pos.w > 16 * d.info.name.length && d.pos.h > 16) {
             return d.info.name;
           }
         })
-        .style('fill', function(){
-          if(_this.restType !== 'all'){
+        .style('fill', function () {
+          if (_this.restType !== 'all') {
             return '#fff'
           } else {
-            return '#000'
+            return '#333'
           }
         })
         .on("mousemove", function (d) {
           div.transition()
             .duration(10)
-            .style("opacity", .9);
-          div.html(d.info.name + '</br>' + d.info.size + '</br>' + Math.round(((d.pos.w * d.pos.h) / (width * height)) * 10000) / 100 + '%')
+            .style("opacity", 1);
+          div.html( d.info.name + '</br> 店家数量：' + d.info.size + '</br> 所占比例：' + Math.round(((d.pos.w * d.pos.h) / (width * height)) * 13330) / 100 + '%')
             .style("top", (d3.event.pageY) + "px");
           const divWidth = div._groups[0][0].offsetWidth
           if (d3.event.pageX > window.innerWidth - divWidth) {
@@ -177,11 +190,18 @@ export default {
 #blocks
   font-size: 16px;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  width: 500px;
+  height: 500px;
   box-sizing: border-box;
   text-align: center;
   position: relative;
+  padding: 40px 5px;
+  h2
+    font-size: 24px;
+    padding: 5px;
+    font-weight: bold;
+    color: #FFF;
+    padding-left: 80px;
   
   svg
     .MyRect

@@ -25,19 +25,32 @@ export default {
         }
       },
       legend: {
-        data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+        data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎'],
+        textStyle:{
+          color: '#fff'
+        }
       },
       grid: {
         left: '3%',
         right: '4%',
         bottom: '3%',
-        containLabel: true
+        containLabel: true,
+        color: '#fff'
       },
       xAxis: {
         type: 'value'
       },
       yAxis: {
         type: 'category',
+        nameTextStyle: {
+          color:'#fff',
+          fontSize:'16'
+        },
+        axisLine: {
+          lineStyle: {
+            color:'#fff'
+          }
+        },
         data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
       },
       series: [
@@ -114,6 +127,8 @@ export default {
 #wrapper {
    height: 700px;
    overflow-y: scroll;
+   /* background-color: #333; */
+   color: #fff;
 }
 #categorystack {
   height: 1200px;

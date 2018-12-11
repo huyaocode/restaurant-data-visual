@@ -122,11 +122,12 @@ export default {
         .style("opacity", 0)
         .style("z-index", 1000)
         .style("position", 'absolute')
-        .style("color", '#fff')
-        .style("padding", '2px 6px')
+        .style("color", '#000')
+        .style("padding", '6px 12px')
         .style("border-radius", '3px')
         .style("text-align", 'center')
-        .style("background-color", '#000')
+        .style("line-height", '18px')
+        .style("background-color", '#fff')
         .style("top", 10 + "px");
 
 
@@ -146,9 +147,9 @@ export default {
               const { geometry: { name, restType } } = item;
               div.transition()
                 .duration(500)
-                .style("opacity", .9);
-              div.html(name + '</br>' + restType)
-                .style("top", (e.clientY - 40) + "px")
+                .style("opacity", 1);
+              div.html("店名："+name + '</br>' + restType)
+                .style("top", (e.clientY - 55) + "px")
                 .style("left", function () {
                   const divWidth = div._groups[0][0].offsetWidth
                   return e.clientX - divWidth / 2 + "px"
