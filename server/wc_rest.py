@@ -55,7 +55,7 @@ def cloud(text,itemid):
                    #random_state=42,  # 设置有多少种随机生成状态，即有多少种配色方案
                    mode='RGBA', colormap='Spectral',
                    collocations=False,  # 避免重复的单词
-                   width=1650, height=1250, margin=20,  # 设置图像宽高，字体间距
+                   width=1590, height=1205, margin=20,  # 设置图像宽高，字体间距
                    )
     wc.generate(cuted)
     # image_colors = ImageColorGenerator(backgroud_Image)
