@@ -40,9 +40,9 @@ export default {
       }
     }
   },
-  computed:{
+  computed: {
     title () {
-      return this.restType === 'all' ? "绵阳市各类型餐厅比例": this.restType + "在绵阳市分布情况"
+      return this.restType === 'all' ? "绵阳市各类型餐厅比例" : this.restType + "在绵阳市分布情况"
     }
   },
   mounted () {
@@ -60,13 +60,13 @@ export default {
         console.log('没有获取到type-position.json或操作时抛出异常！')
       })
     },
-    color() {
-        const colorList = ['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#e6550d', '#fd8d3c', '#fdae6b', '#fdd0a2', '#31a354', '#74c476', '#a1d99b', '#c7e9c0', '#756bb1', '#9e9ac8', '#bcbddc', '#dadaeb', '#636363', '#969696', '#bdbdbd', '#d9d9d9'];
-        const colorLen = colorList.length;
-        return colorList[parseInt(Math.random() * colorLen)];
+    color () {
+      const colorList = ['#2ec7c9', '#b6a2de', '#5ab1ef',  '#d87a80', '#fdae6b', '#fdd0a2', '#31a354', '#74c476', '#a1d99b', '#756bb1', '#9e9ac8', '#bcbddc'];
+      const colorLen = colorList.length;
+      return colorList[parseInt(Math.random() * colorLen)];
     },
     drawBlocks (arr) {
-      
+
       var svg = d3.select(this.$refs.svg);
       d3.select(this.$refs.svg).selectAll("rect").remove();
       d3.select(this.$refs.svg).selectAll("text").remove();
@@ -122,7 +122,7 @@ export default {
           div.transition()
             .duration(10)
             .style("opacity", 1);
-          div.html( d.info.name + '</br> 店家数量：' + d.info.size + '</br> 所占比例：' + Math.round(((d.pos.w * d.pos.h) / (width * height)) * 13330) / 100 + '%')
+          div.html(d.info.name + '</br> 店家数量：' + d.info.size + '</br> 所占比例：' + Math.round(((d.pos.w * d.pos.h) / (width * height)) * 13330) / 100 + '%')
             .style("top", (d3.event.pageY) + "px");
           const divWidth = div._groups[0][0].offsetWidth
           if (d3.event.pageX > window.innerWidth - divWidth) {
@@ -168,10 +168,13 @@ export default {
           }
         })
         .on("mousemove", function (d) {
+          if (_this.restType !== 'all') {
+            // d3.select(this).attr('fill', '#09c')
+          }
           div.transition()
             .duration(10)
             .style("opacity", 1);
-          div.html( d.info.name + '</br> 店家数量：' + d.info.size + '</br> 所占比例：' + Math.round(((d.pos.w * d.pos.h) / (width * height)) * 13330) / 100 + '%')
+          div.html(d.info.name + '</br> 店家数量：' + d.info.size + '</br> 所占比例：' + Math.round(((d.pos.w * d.pos.h) / (width * height)) * 13330) / 100 + '%')
             .style("top", (d3.event.pageY) + "px");
           const divWidth = div._groups[0][0].offsetWidth
           if (d3.event.pageX > window.innerWidth - divWidth) {

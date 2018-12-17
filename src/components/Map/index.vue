@@ -5,16 +5,16 @@ import func from './vue-temp/vue-editor-bridge';
     <ul id="types">
       <li
         type="all"
-        @click="handleTypeClick"
+        @click="()=>handleTypeClick('all')"
         :class="['all'==restType ? '' : 'half-opacity']"
       >
-        <span :style="{background: 'blue'}"></span> 全选
+        <span :style="{background: 'blue'}" @click="()=>handleTypeClick('all')"></span> 全选
       </li>
       <li
         v-for="t in typeColor"
         :key="t.type"
         :type="t.type"
-        @click="handleTypeClick"
+        @click="()=>handleTypeClick(t.type)"
         :class="[(t.type==restType || 'all'==restType) ? '' : 'half-opacity']"
       >
         <span :style="{background: t.color}"></span> {{t.type}}
@@ -169,8 +169,8 @@ export default {
     /**
      * 类型点击
      */
-    handleTypeClick (e) {
-      this.$emit('rest-type-change', e.target.type)
+    handleTypeClick (type) {
+      this.$emit('rest-type-change', type)
     }
   }
 };

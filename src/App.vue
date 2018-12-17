@@ -173,6 +173,7 @@ export default {
      * 餐厅类型切换
      */
     handleRestTypeChange (value) {
+      this.curRestId = null;
       this.curRestType = value;
     }
   }

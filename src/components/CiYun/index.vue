@@ -18,16 +18,24 @@ export default {
     curRestId: {
       deep: true,
       handler: function () {
-        this.$refs.img.src = "zongpingfen"
+        // this.$refs.img.src = "zongpingfen"
+        this.$refs.img.src = `http://127.0.0.1:5000/static/loading.png`
+        if(this.curRestId == null) {
+          this.$refs.img.src = "http://127.0.0.1:5000/static/zongpingfen.jpg";
+          return;
+        }
         try {
           axios.get(`ciyun?itemid=${this.curRestId}`).then(res => {
-          const url = res.data
-            this.$refs.img.src = `http://127.0.0.1:5000/${url}`
-        }, err => {
-        })
+            const url = res.data
+            if(url == "no matching itemid, please check your itemid"){
+              this.$refs.img.src ="http://127.0.0.1:5000/static/noComment.png"
+            } else {
+              this.$refs.img.src = `http://127.0.0.1:5000/${url}`
+            } 
+          }, err => {
+          })
         } catch (e) {
         }
-        
       }
     }
   }

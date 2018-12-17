@@ -2,7 +2,7 @@
   {
     "name": "咖啡厅",
     "size": 1994,
-    "streets": [
+    "streets": [ 
       { "name": "人民公园", "size": 266 },
       { "name": "武都长钢街道", "size": 4 },
       { "name": "太平镇", "size": 1 },
