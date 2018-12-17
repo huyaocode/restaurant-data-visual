@@ -56,9 +56,9 @@ div
 
 #ciyun
   width: 100%;
-  height: 105%;
+  height: 100%;
   position: absolute;
-  top: -5px;
+  top: 0;
   left: 0;
 
 </style>
