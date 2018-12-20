@@ -219,28 +219,23 @@ export default {
       let x_lines=x_line.selectAll(".tick");
       let tooltip = d3.select(".tooltip")
 
-      x_lines.on("mouseover",function(d,i){ 
+
+      x_lines.on("mousemove",function(d,i){ 
         //悬浮框内文字
         let innerHtml = ""
         for(var i=0;i<datas.length;i++)  {
             innerHtml += lineNames[i] + ": "+ datas[i][d]+"<br>"
         }    
         tooltip.html(innerHtml)
-          .style("left",(d3.event.pageX+3 )+"px")
-          .style("top",(d3.event.pageY+5)+"px")        
+          .style("left",(d3.event.pageX+10 )+"px")
+          .style("top",(d3.event.pageY+10)+"px")        
           .style("opacity",1.0)
           .style("z-index",111)
         if(d3.event.pageX > window.innerWidth -150 ){
           tooltip .style("left",(d3.event.pageX-150 )+"px")     
         }
+    
       })   
-      .on("mousemove",function(d){
-         tooltip.style("left",(d3.event.pageX+3 )+"px")
-         .style("top",(d3.event.pageY+5)+"px")  
-        if(d3.event.pageX > window.innerWidth -150 ){
-          tooltip .style("left",(d3.event.pageX-150 )+"px")     
-        }   
-      })
       .on("mouseout",function(d){
           tooltip.style("opacity",0.0)
                  .style("z-index",-111);
