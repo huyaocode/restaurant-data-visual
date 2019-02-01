@@ -24,8 +24,8 @@
 
 <script>
 import axios from 'axios'
-import Map from './components/Map'
 import * as d3 from 'd3'
+import Map from './components/Map'
 import RestaurantDetail from './components/RestaurantDetail'
 import CiYun from './components/CiYun'
 import ConsumeTend from './components/ConsumeTend'

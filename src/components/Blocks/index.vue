@@ -3,6 +3,7 @@
     id="blocks"
     ref="block"
   >
+  <div>
     <h2>{{title}}</h2>
     <svg
       width="570"
@@ -10,6 +11,8 @@
       ref="svg"
     ></svg>
   </div>
+  </div>
+
 </template>
 
 <script>
@@ -193,23 +196,23 @@ export default {
 #blocks
   font-size: 16px;
   padding: 0;
-  width: 500px;
+  width: 100%;
   height: 500px;
   box-sizing: border-box;
   text-align: center;
   position: relative;
   padding: 40px 5px;
-  h2
-    font-size: 24px;
-    padding: 5px;
-    font-weight: bold;
-    color: #FFF;
-    padding-left: 80px;
-  
-  svg
-    .MyRect
-      background-color: orange;
-    .myText
-      color: #fff;
+  div
+    margin: 0 auto;
+    h2
+      font-size: 24px;
+      padding: 15px;
+      font-weight: bold;
+      color: #FFF;
+    svg
+      .MyRect
+        background-color: orange;
+      .myText
+        color: #fff;
 
 </style>
